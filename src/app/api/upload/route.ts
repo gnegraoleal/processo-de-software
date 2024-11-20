@@ -1,8 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-export async function POST(request: Request) {
-  const data = await request.json(); // Captura os dados enviados no corpo da requisição
-
-  // Lógica para processar os dados
-  return NextResponse.json({ mensagem: 'Seja bem vindo ao Sistema de Upload de Vídeo!!' }, { status: 200 });
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === 'POST') {
+    // Retorna uma mensagem de sucesso
+    res.status(200).json({ mensagem: 'Seja bem-vindo ao nosso trabalho' });
+  } else {
+    res.setHeader('Allow', ['POST']);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
 }
