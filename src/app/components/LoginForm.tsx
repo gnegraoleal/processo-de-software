@@ -11,8 +11,8 @@ const LoginForm: React.FC = () => {
     e.preventDefault();
 
     let isValid = true;
-    setEmailError('');
-    setPasswordError('');
+    setEmailError('');  // Reseta o erro de email
+    setPasswordError('');  // Reseta o erro de senha
 
     // Verificação mais robusta para o campo de email
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -49,7 +49,7 @@ const LoginForm: React.FC = () => {
           onChange={(e) => setEmail(e.target.value)}
           style={{
             ...styles.input,
-            borderColor: emailError ? 'red' : '#ccc',
+            borderColor: emailError ? 'red' : '#ccc', // Mudando a borda com base no erro
           }}
         />
         {emailError && <p style={styles.errorText}>{emailError}</p>}
@@ -62,7 +62,7 @@ const LoginForm: React.FC = () => {
           onChange={(e) => setPassword(e.target.value)}
           style={{
             ...styles.input,
-            borderColor: passwordError ? 'red' : '#ccc',
+            borderColor: passwordError ? 'red' : '#ccc', // Mudando a borda com base no erro
           }}
         />
         {passwordError && <p style={styles.errorText}>{passwordError}</p>}
