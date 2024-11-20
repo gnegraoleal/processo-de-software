@@ -5,10 +5,31 @@ const CadastroForm: React.FC = () => {
   const [nome, setNome] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
 
   const [nomeError, setNomeError] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
+  const [phoneError, setPhoneError] = useState<string>("");
+
+  const [successMessage, setSuccessMessage] = useState<string>("");
+
+  const handlePhoneChange = (value: string) => {
+    const numericValue = value.replace(/\D/g, "");
+    let formattedValue = numericValue;
+    if (numericValue.length > 0) {
+      formattedValue = `(${numericValue.substring(0, 2)}`;
+    }
+    if (numericValue.length > 2) {
+      formattedValue += `) ${numericValue.substring(2, 7)}`;
+    }
+    if (numericValue.length > 7) {
+      formattedValue += `-${numericValue.substring(7, 11)}`;
+    }
+    setPhone(formattedValue);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,6 +38,9 @@ const CadastroForm: React.FC = () => {
     setNomeError("");
     setEmailError("");
     setPasswordError("");
+    setConfirmPasswordError("");
+    setPhoneError("");
+    setSuccessMessage("");
 
     // Validação do nome
     if (!nome.trim()) {
@@ -43,9 +67,29 @@ const CadastroForm: React.FC = () => {
       isValid = false;
     }
 
-    // Se todos os campos forem válidos
+    // Validação de confirmação de senha
+    if (!confirmPassword.trim()) {
+      setConfirmPasswordError("O campo de confirmação de senha é obrigatório");
+      isValid = false;
+    } else if (password !== confirmPassword) {
+      setConfirmPasswordError("As senhas não correspondem");
+      isValid = false;
+    }
+
+    // Validação do número de telefone
+    const phoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+    if (!phone.trim()) {
+      setPhoneError("O campo de telefone é obrigatório");
+      isValid = false;
+    } else if (!phoneRegex.test(phone)) {
+      setPhoneError("O telefone deve estar no formato (XX) XXXXX-XXXX");
+      isValid = false;
+    }
+
+    // Exibir mensagem de sucesso
     if (isValid) {
-      console.log({ nome, email, password });
+      setSuccessMessage("Cadastro enviado com sucesso!");
+      console.log({ nome, email, password, phone });
     }
   };
 
@@ -92,7 +136,7 @@ const CadastroForm: React.FC = () => {
 
         {/* Campo de Senha */}
         <div style={styles.field}>
-          <label htmlFor="senha" style={styles.label}>
+          <label htmlFor="password" style={styles.label}>
             Senha:
           </label>
           <input
@@ -109,10 +153,52 @@ const CadastroForm: React.FC = () => {
           {passwordError && <p style={styles.errorText}>{passwordError}</p>}
         </div>
 
+        {/* Campo de Confirmação de Senha */}
+        <div style={styles.field}>
+          <label htmlFor="confirmPassword" style={styles.label}>
+            Confirme sua senha:
+          </label>
+          <input
+            type="password"
+            id="confirmPassword"
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            style={{
+              ...styles.input,
+              borderColor: confirmPasswordError ? "red" : "#ccc",
+            }}
+          />
+          {confirmPasswordError && (
+            <p style={styles.errorText}>{confirmPasswordError}</p>
+          )}
+        </div>
+
+        {/* Campo de Telefone */}
+        <div style={styles.field}>
+          <label htmlFor="phone" style={styles.label}>
+            Número de telefone:
+          </label>
+          <input
+            id="phone"
+            placeholder="(XX) XXXXX-XXXX"
+            value={phone}
+            onChange={(e) => handlePhoneChange(e.target.value)}
+            style={{
+              ...styles.input,
+              borderColor: phoneError ? "red" : "#ccc",
+            }}
+          />
+          {phoneError && <p style={styles.errorText}>{phoneError}</p>}
+        </div>
+
         <button type="submit" style={styles.button}>
           Confirmar
         </button>
       </form>
+
+      {/* Mensagem de Sucesso */}
+      {successMessage && <p style={styles.successText}>{successMessage}</p>}
     </div>
   );
 };
@@ -166,6 +252,12 @@ const styles = {
     marginTop: "5px",
     color: "red",
     fontSize: "12px",
+  },
+  successText: {
+    marginTop: "15px",
+    color: "green",
+    fontSize: "14px",
+    textAlign: "center" as const,
   },
 };
 
