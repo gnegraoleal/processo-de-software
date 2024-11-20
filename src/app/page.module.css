@@ -6,13 +6,13 @@
   --button-primary-hover: #383838;
   --button-secondary-hover: #f2f2f2;
 
-  display: grid;
-  grid-template-rows: 20px 1fr 20px;
-  align-items: center;
-  justify-items: center;
-  min-height: 100svh;
-  padding: 80px;
-  gap: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza o conteúdo horizontalmente */
+  justify-content: center; /* Centraliza o conteúdo verticalmente */
+  min-height: 100vh; /* Garante que a página ocupe toda a altura da tela */
+  padding: 40px; /* Adiciona um pouco de preenchimento */
+  text-align: center; /* Centraliza o texto */
   font-family: var(--font-geist-sans);
 }
 
@@ -164,5 +164,46 @@ a.secondary {
 @media (prefers-color-scheme: dark) {
   .logo {
     filter: invert();
+  }
+}
+.button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #0070f3;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #005bb5;
+}
+.title {
+  font-size: 2.5rem;
+  color: #333; /* Cor do texto */
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: #555; /* Cor do texto */
+  margin-bottom: 40px;
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 2rem; /* Tamanho da fonte reduzido em telas menores */
+  }
+
+  .subtitle {
+    font-size: 1.2rem; /* Tamanho da fonte reduzido em telas menores */
+  }
+
+  .button {
+    font-size: 1rem; /* Tamanho do botão reduzido em telas menores */
   }
 }

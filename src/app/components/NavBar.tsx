@@ -19,7 +19,10 @@ const NavBar: React.FC = () => {
       >
         ☰
       </button>
-      <ul style={{ ...styles.menu, ...(isMenuOpen ? styles.menuOpen : {}) }}>
+      <ul style={{ 
+          ...styles.menu, 
+          ...(isMenuOpen ? styles.menuOpen : {}) 
+        }}>
         <li style={styles.menuItem}>
           <Link href="/">Página Inicial</Link>
         </li>
@@ -51,8 +54,8 @@ const styles = {
     fontWeight: 'bold',
   },
   hamburger: {
-    display: 'none',
-    fontSize: '24px',
+    display: 'none', // Inicialmente escondido
+    fontSize: '24px', // Corrigido para incluir 'px'
     background: 'none',
     border: 'none',
     color: '#fff',
@@ -75,21 +78,19 @@ const styles = {
     backgroundColor: '#0070f3',
     borderRadius: '8px',
     padding: '10px',
+    zIndex: 1000, // Garante que o menu fique acima de outros elementos
   },
   menuItem: {
     cursor: 'pointer',
   },
-  '@media (max-width: 768px)': {
-    hamburger: {
-      display: 'block',
-    },
-    menu: {
-      display: 'none',
-    },
-    menuOpen: {
-      display: 'flex',
-    },
-  },
 };
+
+// Estilos responsivos aplicados diretamente no JSX
+if (typeof window !== 'undefined') {
+  const mediaQuery = window.matchMedia('(max-width: 768px)');
+  if (mediaQuery.matches) {
+    styles.hamburger.display = 'block'; // Mostra o hamburger em telas pequenas
+  }
+}
 
 export default NavBar;
