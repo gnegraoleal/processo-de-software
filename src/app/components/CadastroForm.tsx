@@ -4,25 +4,13 @@ import React, { useState } from 'react';
 const CadastroForm: React.FC = () => {
   const [nome, setNome] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [mensagem, setMensagem] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await fetch('http://localhost:3001/api/cadastro', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ nome, email }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      setMensagem(data.mensagem);
-    } else {
-      setMensagem('Erro ao cadastrar. Tente novamente.');
-    }
+    // Lógica de envio pode ser adicionada aqui, se necessário
+    console.log({ nome, email, password });
   };
 
   return (
@@ -51,9 +39,19 @@ const CadastroForm: React.FC = () => {
             required
           />
         </div>
+        <div style={styles.field}>
+          <label htmlFor="senha" style={styles.label}>Senha:</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={styles.input}
+            required
+          />
+        </div>
         <button type="submit" style={styles.button}>Confirmar</button>
       </form>
-      {mensagem && <p style={styles.message}>{mensagem}</p>}
     </div>
   );
 };
@@ -102,11 +100,6 @@ const styles = {
     borderRadius: '4px',
     cursor: 'pointer',
     transition: 'background-color 0.3s',
-  },
-  message: {
-    marginTop: '15px',
-    textAlign: 'center' as const,
-    color: 'green',
   },
 };
 
