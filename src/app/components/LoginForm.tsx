@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import React, { useState, FormEvent } from 'react';
+import Link from 'next/link';
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -74,7 +74,7 @@ const LoginForm: React.FC = () => {
 
         {/* Link para a página de cadastro */}
         <Link href={"/cadastro"}>
-          <button style={{ ...styles.button, marginTop: '10px' }}>
+          <button style={{ ...styles.button, marginTop: '10px' }} type="button">
             Não tem conta? Cadastre-se!
           </button>
         </Link>
