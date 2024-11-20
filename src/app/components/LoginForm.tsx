@@ -2,40 +2,81 @@ import Link from 'next/link';
 import React, { useState, FormEvent } from 'react';
 
 const LoginForm: React.FC = () => {
-  const [username, setUsername] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [emailError, setEmailError] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<string>('');
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Username:', username);
-    console.log('Password:', password);
+
+    let isValid = true;
+    setEmailError('');
+    setPasswordError('');
+
+    // Verificação mais robusta para o campo de email
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!email) {
+      setEmailError('O campo de email é obrigatório');
+      isValid = false;
+    } else if (!emailRegex.test(email)) {
+      setEmailError('Por favor, insira um email válido');
+      isValid = false;
+    }
+
+    // Verificação do campo de senha
+    if (!password) {
+      setPasswordError('O campo de senha é obrigatório');
+      isValid = false;
+    }
+
+    // Se tudo estiver correto, enviar os dados
+    if (isValid) {
+      console.log('Email:', email);
+      console.log('Password:', password);
+    }
   };
 
   return (
     <div style={styles.container}>
       <form onSubmit={handleSubmit} style={styles.form}>
         <h2 style={styles.title}>Login</h2>
+
+        {/* Campo de email */}
         <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={{
+            ...styles.input,
+            borderColor: emailError ? 'red' : '#ccc',
+          }}
         />
+        {emailError && <p style={styles.errorText}>{emailError}</p>}
+
+        {/* Campo de senha */}
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={styles.input}
+          style={{
+            ...styles.input,
+            borderColor: passwordError ? 'red' : '#ccc',
+          }}
         />
+        {passwordError && <p style={styles.errorText}>{passwordError}</p>}
+
+        {/* Botão de login */}
         <button type="submit" style={styles.button}>
           Login
         </button>
+
+        {/* Link para a página de cadastro */}
         <Link href={"/cadastro"}>
-        <button style={{...styles.button, marginTop:'10px'}}>
-          Não tem conta? Cadastre-se!
-        </button>
+          <button style={{ ...styles.button, marginTop: '10px' }}>
+            Não tem conta? Cadastre-se!
+          </button>
         </Link>
       </form>
     </div>
@@ -83,8 +124,10 @@ const styles = {
     cursor: 'pointer',
     transition: 'background-color 0.3s',
   },
-  buttonHover: {
-    backgroundColor: '#005bb5',
+  errorText: {
+    color: 'red',
+    fontSize: '12px',
+    margin: '0 0 10px 0',
   },
 };
 
