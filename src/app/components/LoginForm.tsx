@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { useState, FormEvent } from 'react';
 
 const LoginForm: React.FC = () => {
@@ -31,6 +32,11 @@ const LoginForm: React.FC = () => {
         <button type="submit" style={styles.button}>
           Login
         </button>
+        <Link href={"/cadastro"}>
+        <button style={{...styles.button, marginTop:'10px'}}>
+          Não tem conta? Cadastre-se!
+        </button>
+        </Link>
       </form>
     </div>
   );
